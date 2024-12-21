@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .article {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .article span {
+            font-weight: bold;
+        }
+        .cart {
+            border-top: 2px solid #000;
+            margin-top: 20px;
+            padding-top: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        ul li {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Articles</h1>
+    <div id="articles">
+        <div class="article">
+            <span>Article 1 - $10</span>
+            <button onclick="addToCart('Article 1', 10)">Add to Cart</button>
+        </div>
+        <div class="article">
+            <span>Article 2 - $15</span>
+            <button onclick="addToCart('Article 2', 15)">Add to Cart</button>
+        </div>
+        <div class="article">
+            <span>Article 3 - $20</span>
+            <button onclick="addToCart('Article 3', 20)">Add to Cart</button>
+        </div>
+        <div class="article">
+            <span>Article 4 - $25</span>
+            <button onclick="addToCart('Article 4', 25)">Add to Cart</button>
+        </div>
+        <div class="article">
+            <span>Article 5 - $30</span>
+            <button onclick="addToCart('Article 5', 30)">Add to Cart</button>
+        </div>
+        <div class="article">
+            <span>Article 6 - $35</span>
+            <button onclick="addToCart('Article 6', 35)">Add to Cart</button>
+        </div>
+    </div>
+
+    <button onclick="viewCart()">View Cart</button>
+
+    <div id="cart" class="cart" style="display: none;">
+        <h2>Your Cart</h2>
+        <ul id="cart-items"></ul>
+        <p id="total-price">Total: $0</p>
+        <button onclick="confirmPurchase()">Confirm Purchase</button>
+        <button onclick="clearCart()">Clear Cart</button>
+    </div>
+
+    <script>
+        const cart = [];
+
+        function addToCart(name, price) {
+            cart.push({ name, price });
+            alert(`${name} added to cart!`);
+        }
+
+        function viewCart() {
+            const cartDiv = document.getElementById('cart');
+            const cartItems = document.getElementById('cart-items');
+            const totalPrice = document.getElementById('total-price');
+
+            cartItems.innerHTML = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.textContent = `${item.name} - $${item.price}`;
+
+                const removeButton = document.createElement('button');
+                removeButton.textContent = 'Remove';
+                removeButton.onclick = () => {
+                    cart.splice(index, 1);
+                    viewCart();
+                };
+
+                li.appendChild(removeButton);
+                cartItems.appendChild(li);
+                total += item.price;
+            });
+
+            totalPrice.textContent = `Total: $${total}`;
+            cartDiv.style.display = 'block';
+        }
+
+        function confirmPurchase() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            alert('Purchase confirmed!');
+            clearCart();
+        }
+
+        function clearCart() {
+            cart.length = 0;
+            viewCart();
+            document.getElementById('cart').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
